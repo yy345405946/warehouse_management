@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Form } from 'antd';
-import OutputOrderTable from './outputOrderTable';
+import { Button, Modal } from 'antd';
+import Transfer from '../components/transfer';
+import PdfContainer from '../components/pdfContainer';
 
 class App extends Component{
     constructor(props){
@@ -17,6 +18,14 @@ class App extends Component{
         });
     }
 
+    reset = () => {
+        this.newOrder = {};
+    }
+
+    handleOk = () => {
+        document.querySelector("#pdf-container-parent form").submit();
+    }
+
     handleCancel = () => {
         this.setState({
             visible: false
@@ -24,15 +33,19 @@ class App extends Component{
     }
 
     render(){
+
         return (
             <span>
-                <a href="javascript:void(0);" onClick={this.showModal}>出库单</a>
+                <Button type="primary" onClick={this.showModal}>报表</Button>
                 <Modal
-                    title="出库单"
+                    title="导出"
                     visible={this.state.visible}
+                    okText="导出"
+                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <OutputOrderTable inputOrderId={this.props.inputOrderId}/>
+                    <Transfer />
+                    <PdfContainer />
                 </Modal>
             </span>
         );

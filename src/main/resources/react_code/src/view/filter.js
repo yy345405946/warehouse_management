@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Button, DatePicker, Row, Col } from 'antd';
 import InputOrderEditModal from './inputOrderEditModal';
 import OutputOrderEditModal from './outputOrderEditModal';
+import ExportOrderModal from './exportOrderModal';
 
 const { RangePicker } = DatePicker;
 
@@ -57,7 +58,7 @@ class Filter extends React.Component{
                             onChange={this.keyWordsChange}
                         />
                     </Col>
-                    <Col span={18}>
+                    <Col span={17}>
                     </Col>
                     <Col span={1}>
                         <Button type="primary" style={{marginRight: 16}} onClick={this.search}>查询</Button>
@@ -66,7 +67,10 @@ class Filter extends React.Component{
                         <Button type="primary" style={{marginRight: 16}} onClick={this.reset}>重置</Button>
                     </Col>
                     <Col span={1}>
-                        <InputOrderEditModal onSave={this.props.onSave}/>
+                        <InputOrderEditModal isEdit={false} onSave={this.props.onSave} onFetch={this.props.onFetch}/>
+                    </Col>
+                    <Col span={1}>
+                        <OutputOrderEditModal isEdit={false} onFetch={this.props.onFetch}/>
                     </Col>
                 </Row>
                 <Row type="flex" style={{marginBottom: 16}}>
@@ -74,7 +78,7 @@ class Filter extends React.Component{
                         <RangePicker ref={node => (this.globalRangePicker = node)} onChange={this.dateChange} size="default" />
                     </Col>
                     <Col span={1}>
-                        <Button type="primary" style={{marginRight: 16}}>报表</Button>
+                        <ExportOrderModal />
                     </Col>
                 </Row>
             </div>

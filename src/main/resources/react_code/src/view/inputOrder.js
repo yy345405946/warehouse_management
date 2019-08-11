@@ -11,7 +11,7 @@ class InputOrder extends Component{
         const { onReset } = this.props;
         onReset();
         this.useType.setState({value: "自用"});
-        this.categroy.setState({value: ""});
+        this.category.setState({value: ""});
         this.vendor.setState({value: ""});
         this.name.setState({value: ""});
         this.cost.setState({value: ""});
@@ -42,7 +42,7 @@ class InputOrder extends Component{
                     </Col>
                     <Col span={12}>
                         <div>商品归类</div>
-                        <Input ref={node => (this.categroy = node)} defaultValue={record? record.categroy : ""} onChange={this.categroyChange}/>
+                        <Input ref={node => (this.category = node)} defaultValue={record? record.category : ""} onChange={this.categoryChange}/>
                     </Col>
                 </Row>
                 <Row gutter={32}>
@@ -118,9 +118,9 @@ class InputOrder extends Component{
         onUpdate("useType", value);
     }
 
-    categroyChange = e => {
+    categoryChange = e => {
         const { onUpdate } = this.props;
-        onUpdate("categroy", e.target.value);
+        onUpdate("category", e.target.value);
     }
 
     vendorChange = e => {

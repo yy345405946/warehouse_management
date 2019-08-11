@@ -5,7 +5,6 @@ import moment from 'moment';
 import Highlighter from 'react-highlight-words';
 import Filter from './filter';
 import InputOrderEditModal from './inputOrderEditModal';
-import OutputOrderEditModal from './outputOrderEditModal';
 import OutputOrderModal from './outOrderModal';
 
 const dateFormat = 'YYYY-MM-DD';
@@ -22,23 +21,19 @@ class EditableTable extends React.Component{
         }
 
         this.columns = [
-//            {
-//                title: '',
-//                dataIndex: 'id',
-//                width: '2%'
-//            },
             {
                 title: '使用',
                 dataIndex: 'useType',
                 width: '5%',
                 filters: [{ text: '自用', value: '自用' }, { text: '他用', value: '他用' }],
-                ...this.getColumnSearchProps('useType'),
+                onFilter: (value, record) => record.useType.indexOf(value) === 0
+                //...this.getColumnSearchProps('useType'),
             },
             {
                 title: '商品归类',
-                dataIndex: 'categroy',
+                dataIndex: 'category',
                 width: '8%',
-                ...this.getColumnSearchProps('categroy'),
+                ...this.getColumnSearchProps('category'),
             },
             {
                 title: '供应商',
@@ -56,30 +51,35 @@ class EditableTable extends React.Component{
                 title: '单价',
                 dataIndex: 'cost',
                 width: '5%',
-                sorter: true
+                sorter: (a, b) => a.cost - b.cost,
+                sortDirections: ['descend', 'ascend']
             },
             {
                 title: '数量',
                 dataIndex: 'number',
                 width: '5%',
-                sorter: true
+                sorter: (a, b) => a.number - b.number,
+                sortDirections: ['descend', 'ascend']
             },
             {
                 title: '余数',
                 dataIndex: 'snum',
                 width: '5%',
-                sorter: true
+                sorter: (a, b) => a.snum - b.snum,
+                sortDirections: ['descend', 'ascend']
             },
             {
                 title: '单位',
                 dataIndex: 'unit',
-                width: '5%'
+                width: '5%',
+                ...this.getColumnSearchProps('unit'),
             },
             {
                 title: '入库时间',
                 dataIndex: 'rukuDate',
                 width: '10%',
-                sorter: true,
+                sorter: (a, b) => a.rukuDate - b.rukuDate,
+                sortDirections: ['descend', 'ascend'],
                 render: rukuDate => {
                     if(rukuDate){
                         return moment(rukuDate).format(dateFormat)
@@ -91,7 +91,8 @@ class EditableTable extends React.Component{
                 title: '返利',
                 dataIndex: 'rebate',
                 width: '5%',
-                sorter: true
+                sorter: (a, b) => a.rebate - b.rebate,
+                sortDirections: ['descend', 'ascend']
             },
             {
                 title: '总价',
@@ -107,7 +108,8 @@ class EditableTable extends React.Component{
                 title: '结算时间',
                 dataIndex: 'checkoutDate',
                 width: '7%',
-                sorter: true,
+                sorter: (a, b) => a.checkoutDate - b.checkoutDate,
+                sortDirections: ['descend', 'ascend'],
                 render: rukuDate => {
                     if(rukuDate){
                         return moment(rukuDate).format(dateFormat)
@@ -123,24 +125,13 @@ class EditableTable extends React.Component{
             {
                 title: '操作',
                 dataIndex: 'action',
-                width: '14%',
+                width: '10%',
                 render: (text, record) => {
-
                     return (
                         <span>
-                            {
-                                record.snum > 0? (
-                                    <span>
-                                        <OutputOrderEditModal inputOrderId={record.id}/>
-                                        <Divider type="vertical" />
-                                    </span>
-                                ) : (
-                                    <span></span>
-                                )
-                            }
-                            <OutputOrderModal inputOrderId={record.id}/>
+                            <OutputOrderModal inputOrderId={record.id} onFetch={this.fetch}/>
                             <Divider type="vertical" />
-                            <InputOrderEditModal isEdit={true} record={record} onSave={this.edit}/>
+                            <InputOrderEditModal isEdit={true} record={record} onSave={this.edit} onFetch={this.fetch}/>
                             <Divider type="vertical" />
                             <Popconfirm title="Sure to delete?" onConfirm={() => this.delete(record.id)}>
                                 <a>删除</a>
@@ -161,7 +152,7 @@ class EditableTable extends React.Component{
             loading: true
         });
         reqwest({
-            url: '/rukuOrder/findAll',
+            url: '/ruku/findAll',
             method: 'get',
             type: 'json',
         }).then(dataSource => {
@@ -177,7 +168,7 @@ class EditableTable extends React.Component{
             loading: true
         });
         reqwest({
-            url: '/rukuOrder/find',
+            url: '/ruku/find',
             method: 'get',
             data: {
                 ...params
@@ -252,71 +243,43 @@ class EditableTable extends React.Component{
             loading: true
         });
         reqwest({
-            url: '/rukuOrder/deleteById?id='+id,
+            url: '/ruku/deleteById?id='+id,
             method: 'delete'
         }).then(response => {
             if(response){
-                const dataSource = [...this.state.dataSource];
-                this.setState({
-                    loading: false,
-                    dataSource: dataSource.filter(item => item.id !== id)
-                });
+                this.fetch();
             }
         });
     }
 
     edit = (record) => {
-        debugger;
         this.setState({
             loading: true
         });
         reqwest({
-            url: '/rukuOrder/save',
+            url: '/ruku/save',
             method: 'put',
             data: JSON.stringify(record),
             contentType: 'application/json'
         }).then(response => {
             if(response){
-                const newDataSource = [...this.state.dataSource];
-                const index = newDataSource.findIndex(item => response.id === item.id);
-                if(index > -1){
-                    const item = newDataSource[index];
-                    newDataSource.splice(index, 1, {
-                        ...item,
-                        ...response
-                    });
-                    this.setState({
-                        loading: false,
-                        dataSource: newDataSource
-                    });
-                }else{
-                    this.setState({
-                        loading: false,
-                        dataSource: [response, ...newDataSource]
-                    });
-                }
+                this.fetch();
             }
         });
     }
 
     save = (record) => {
-        debugger;
         this.setState({
             loading: true
         });
         reqwest({
-            url: '/rukuOrder/save',
+            url: '/ruku/save',
             method: 'put',
             data: JSON.stringify(record),
             contentType: "application/json"
         }).then(response => {
             if(response){
-                console.log(response);
-                const newDataSource = [...this.state.dataSource];
-                this.setState({
-                    loading: false,
-                    dataSource: [response, ...newDataSource]
-                });
+                this.fetch();
             }
         });
     }

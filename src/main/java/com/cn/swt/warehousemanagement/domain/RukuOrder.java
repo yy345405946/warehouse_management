@@ -21,7 +21,7 @@ public class RukuOrder {
     @Column(name="use_type")
     private String useType;
 
-    private String categroy;
+    private String category;
 
     private String vendor;
 

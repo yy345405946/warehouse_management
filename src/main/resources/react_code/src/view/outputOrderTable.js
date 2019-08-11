@@ -61,7 +61,7 @@ class OutputEditableTable extends React.Component{
                 render: (text, record) => {
                     return (
                         <span>
-                            <OutputOrderEditModal isEdit={true} />
+                            <OutputOrderEditModal isEdit={true} record={record} onFetch={this.props.onFetch}/>
                             <Divider type="vertical" />
                             <Popconfirm title="Sure to delete?" onConfirm={() => this.delete(record.id)}>
                                 <a>删除</a>
@@ -74,7 +74,13 @@ class OutputEditableTable extends React.Component{
     }
 
     componentDidMount() {
-        this.fetch(this.props.inputOrderId);
+        this.fetch();
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.visible){
+            this.fetch();
+        }
     }
 
     delete = (id) => {
@@ -82,25 +88,22 @@ class OutputEditableTable extends React.Component{
             loading: true
         });
         reqwest({
-            url: '/chukuOrder/deleteById?id='+id,
+            url: '/chuku/deleteById?id='+id,
             method: 'delete'
         }).then(response => {
             if(response){
-                const dataSource = [...this.state.dataSource];
-                this.setState({
-                    loading: false,
-                    dataSource: dataSource.filter(item => item.id !== id)
-                });
+                this.fetch();
+                this.props.onFetch();
             }
         });
     }
 
-    fetch = (inputOrderId) => {
+    fetch = () => {
         this.setState({
             loading: true
         });
         reqwest({
-            url: '/chukuOrder/findByInputOrderId?inputOrderId='+inputOrderId,
+            url: '/chuku/findByInputOrderId?inputOrderId='+this.props.inputOrderId,
             method: 'get',
             type: 'json',
         }).then(dataSource => {
@@ -115,31 +118,15 @@ class OutputEditableTable extends React.Component{
     edit = (record) => {
         const { dataSource } = this.state;
         reqwest({
-            url: '/chukuOrder/save',
+            url: '/chuku/save',
             method: 'put',
             data: JSON.stringify(record),
             contentType: "application/json"
         }).then(response => {
             console.log(dataSource)
             if(response){
-                const newDataSource = [...this.state.dataSource];
-                const index = newDataSource.findIndex(item => response.id === item.id);
-                if(index > -1){
-                    const item = newDataSource[index];
-                    newDataSource.splice(index, 1, {
-                        ...item,
-                        ...response
-                    });
-                    this.setState({
-                        loading: false,
-                        dataSource: newDataSource
-                    });
-                }else{
-                    this.setState({
-                        loading: false,
-                        dataSource: [response, ...newDataSource]
-                    });
-                }
+                this.fetch();
+                this.props.onFetch();
             }
         });
     }
@@ -197,13 +184,6 @@ class OutputEditableTable extends React.Component{
         clearFilters();
         this.setState({
             searchText: ''
-        });
-    }
-
-    handleDelete = key => {
-        const dataSource = [...this.state.dataSource];
-        this.setState({
-            dataSource: dataSource.filter(item => item.key !== key)
         });
     }
 

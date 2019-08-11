@@ -1,5 +1,6 @@
 package com.cn.swt.warehousemanagement.web;
 
+import com.cn.swt.warehousemanagement.domain.RukuCascadar;
 import com.cn.swt.warehousemanagement.domain.RukuOrder;
 import com.cn.swt.warehousemanagement.service.RukuOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/rukuOrder")
+@RequestMapping("/ruku")
 public class RukuOrderController {
 
     @Autowired
@@ -40,5 +41,25 @@ public class RukuOrderController {
             return findAll();
         }
         return rukuOrderService.find(keyWords, startDate, endDate);
+    }
+
+    @GetMapping(value = "/findForChuku")
+    public List<RukuCascadar> findForChuku(){
+        return rukuOrderService.findForChuku();
+    }
+
+    @GetMapping(value = "/findRukuByParams")
+    public int findRukuByParams(
+            @RequestParam String useType,
+            @RequestParam String category,
+            @RequestParam String vendor,
+            @RequestParam String name,
+            @RequestParam String unit){
+        RukuOrder rukuOrder = rukuOrderService.findRukuByParams(useType, category, vendor, name, unit);
+        if(rukuOrder != null){
+            return rukuOrder.getId();
+        }else{
+            return 0;
+        }
     }
 }

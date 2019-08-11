@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chukuOrder")
+@RequestMapping("/chuku")
 public class ChukuOrderController {
 
     @Autowired
