@@ -36,13 +36,14 @@ class OutputOrder extends Component{
                         {
                             record && record.chukuDate? (
                                 <DatePicker
+                                    placeholder="选择日期"
                                     style={{ width: "100%" }}
                                     defaultValue={moment(record.chukuDate, dateFormat)}
                                     format={dateFormat}
                                     onChange={this.priceChange}
                                 />
                             ) : (
-                                <DatePicker style={{ width: "100%" }} format={dateFormat} onChange={this.chukuDateChange}/>
+                                <DatePicker placeholder="选择日期" style={{ width: "100%" }} format={dateFormat} onChange={this.chukuDateChange}/>
                             )
                         }
                     </Col>

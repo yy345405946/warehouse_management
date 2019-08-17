@@ -7,7 +7,7 @@ class App extends Component{
         super(props);
 
         this.state = {
-            targetKeys: [],
+            targetKeys: ['useType','category','vendor','name','unit','rukuDate','rukuNumber','cost','debate','checkoutDate','chukuNumber','chukuDate','price'],
             selectedKeys: [],
             disabled: false
         }
@@ -32,6 +32,10 @@ class App extends Component{
             {
                 key: 'unit',
                 title: '单位'
+            },
+            {
+                key: 'rukuDate',
+                title: '入库时间'
             },
             {
                 key: 'rukuNumber',
@@ -78,9 +82,6 @@ class App extends Component{
         });
     }
 
-    handleScroll = (direction, e) => {
-    }
-
     render() {
         const { targetKeys, selectedKeys, disabled } = this.state;
 
@@ -92,7 +93,6 @@ class App extends Component{
                 selectedKeys={selectedKeys}
                 onChange={this.handleChange}
                 onSelectChange={this.handleSelectChange}
-                onScroll={this.handleScroll}
                 render={item => item.title}
                 />
         )

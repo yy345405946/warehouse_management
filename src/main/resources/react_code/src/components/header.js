@@ -7,7 +7,7 @@ class HeaderComponent extends Component{
     render(){
 
         return (
-            <Row style={{marginBottom:10}}>
+            <Row>
                 <Col span={11}>
                     <Row>
                         <span className="huaWenKaiTi">謝朝華于已披, 啓夕秀于未振</span>

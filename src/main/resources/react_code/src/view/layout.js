@@ -10,8 +10,8 @@ class App extends React.Component{
 
     render(){
         return (
-            <Layout className="layout">
-                <Header>
+            <Layout className="swt-layout">
+                <Header className="swt-header">
                     <HeaderContent />
                 </Header>
                 <Content style={{padding: "0 10px"}}>
@@ -19,7 +19,7 @@ class App extends React.Component{
                         <InputOrderTable />
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
+                <Footer className="swt-footer" style={{ textAlign: 'center' }}>
                     <FooterContent />
                 </Footer>
             </Layout>

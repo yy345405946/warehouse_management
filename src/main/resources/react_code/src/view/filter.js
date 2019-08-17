@@ -75,7 +75,7 @@ class Filter extends React.Component{
                 </Row>
                 <Row type="flex" style={{marginBottom: 16}}>
                     <Col span={23}>
-                        <RangePicker ref={node => (this.globalRangePicker = node)} onChange={this.dateChange} size="default" />
+                        <RangePicker ref={node => (this.globalRangePicker = node)} onChange={this.dateChange} size="default" placeholder={["开始日期", "结束日期"]}/>
                     </Col>
                     <Col span={1}>
                         <ExportOrderModal params={this.params}/>

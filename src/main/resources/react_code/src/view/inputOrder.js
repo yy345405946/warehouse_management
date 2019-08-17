@@ -74,9 +74,9 @@ class InputOrder extends Component{
                         <div>入库时间</div>
                         {
                             record && record.rukuDate? (
-                                <DatePicker style={{ width: "100%" }} ref={node => (this.rukuDate = node)} defaultValue={moment(record.rukuDate, dateFormat)} onChange={this.rukuDateChange} />
+                                <DatePicker style={{ width: "100%" }} placeholder="选择日期" ref={node => (this.rukuDate = node)} defaultValue={moment(record.rukuDate, dateFormat)} onChange={this.rukuDateChange} />
                             ) : (
-                                <DatePicker style={{ width: "100%" }} ref={node => (this.rukuDate = node)} onChange={this.rukuDateChange} />
+                                <DatePicker style={{ width: "100%" }} placeholder="选择日期" ref={node => (this.rukuDate = node)} onChange={this.rukuDateChange} />
                             )
                         }
                     </Col>
@@ -91,6 +91,7 @@ class InputOrder extends Component{
                         {
                             record && record.checkoutDate? (
                                 <DatePicker
+                                    placeholder="选择日期"
                                     style={{ width: "100%" }}
                                     ref={node => (this.checkoutDate = node)}
                                     defaultValue={moment(record.checkoutDate, dateFormat)}
@@ -98,7 +99,7 @@ class InputOrder extends Component{
                                     onChange={this.checkoutDateChange}
                                 />
                             ) : (
-                                <DatePicker style={{ width: "100%" }} ref={node => (this.checkoutDate = node)} format={dateFormat} onChange={this.checkoutDateChange} />
+                                <DatePicker style={{ width: "100%" }} placeholder="选择日期" ref={node => (this.checkoutDate = node)} format={dateFormat} onChange={this.checkoutDateChange} />
                             )
                         }
                     </Col>

@@ -5,8 +5,12 @@ class FooterComponent extends Component{
 
     render(){
         return (
-            <Row className="swt-footer border">
+            <Row className="border">
                 <Col span={8}>
+                    <Row>
+                        <img src="/images/weixin.png" style={{visibility: "hidden"}} />
+                        <img src="/images/weibo.png" style={{visibility: "hidden"}} />
+                    </Row>
                     <Row>
                         <Col span={2}>
                             <img src="/images/zhizhao.png" />

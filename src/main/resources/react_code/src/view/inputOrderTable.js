@@ -32,7 +32,7 @@ class EditableTable extends React.Component{
                 title: '商品归类',
                 dataIndex: 'category',
                 width: '8%',
-                ...this.getColumnSearchProps('category'),
+                ...this.getColumnSearchProps('category')
             },
             {
                 title: '供应商',
@@ -44,14 +44,14 @@ class EditableTable extends React.Component{
                 title: '品名',
                 dataIndex: 'name',
                 width: '8%',
-                ...this.getColumnSearchProps('name'),
+                ...this.getColumnSearchProps('name')
             },
             {
                 title: '单价',
                 dataIndex: 'cost',
                 width: '5%',
                 sorter: (a, b) => a.cost - b.cost,
-                sortDirections: ['descend', 'ascend']
+                sortDirections: ['ascend']
             },
             {
                 title: '数量',
@@ -71,7 +71,7 @@ class EditableTable extends React.Component{
                 title: '单位',
                 dataIndex: 'unit',
                 width: '5%',
-                ...this.getColumnSearchProps('unit'),
+                ...this.getColumnSearchProps('unit')
             },
             {
                 title: '入库时间',
@@ -119,8 +119,7 @@ class EditableTable extends React.Component{
             {
                 title: '备注',
                 dataIndex: 'memo',
-                width: '9%',
-                className: 'swt-memo'
+                width: '9%'
             },
             {
                 title: '操作',
@@ -186,7 +185,7 @@ class EditableTable extends React.Component{
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
             <div style={{padding: 8}}>
                 <Input ref={node => { this.searchInput = node; }}
-                    placeholder={"Search "+dataIndex}
+                    placeholder={"查询"}
                     value={selectedKeys[0]}
                     onChange={e => {setSelectedKeys(e.target.value? [e.target.value] : [])}}
                     onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
@@ -199,10 +198,10 @@ class EditableTable extends React.Component{
                     size="small"
                     style={{ width: 90, marginRight: 8 }}
                 >
-                    Search
+                    查询
                 </Button>
                 <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                    Reset
+                    重置
                 </Button>
             </div>
         ),

@@ -121,6 +121,7 @@ class App extends Component{
                     title="出库"
                     visible={this.state.visible}
                     okText="出库"
+                    cancelText="取消"
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >

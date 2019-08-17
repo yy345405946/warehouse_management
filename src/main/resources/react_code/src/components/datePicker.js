@@ -19,7 +19,7 @@ class DatePickerFormItem extends Component{
                         }
                     ],
                     initialValue: moment(value, dateFormat)
-                })(<DatePicker size="default" />)}
+                })(<DatePicker size="default" placeholder="选择日期" />)}
             </Form.Item>
         )
     }

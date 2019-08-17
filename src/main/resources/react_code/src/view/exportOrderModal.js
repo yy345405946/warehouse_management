@@ -10,8 +10,9 @@ class App extends Component{
 
         this.state = {
             visible: false,
-            tabIndex: [],
-            tableDataSource: []
+            tabIndex: ['useType','category','vendor','name','unit','rukuDate','rukuNumber','cost','debate','checkoutDate','chukuNumber','chukuDate','price'],
+            tableDataSource: [],
+            chartDataSource: []
         }
     }
 
@@ -29,12 +30,11 @@ class App extends Component{
     handleOk = () => {
         document.querySelector("input.pdf-html").value = document.querySelector("div#pdf-container").outerHTML;
         document.querySelector("#pdf-container-parent form").submit();
+        this.setState( { visible: false } );
     }
 
     handleCancel = () => {
-        this.setState({
-            visible: false
-        });
+        this.setState( { visible: false } );
     }
 
     handleTransferChange = (targetKeys) => {
@@ -56,7 +56,7 @@ class App extends Component{
     }
 
     render(){
-        const { visible, tableDataSource, tabIndex } = this.state;
+        const { visible, tableDataSource, chartDataSource, tabIndex } = this.state;
 
         return (
             <span>
@@ -65,11 +65,12 @@ class App extends Component{
                     title="导出"
                     visible={visible}
                     okText="导出"
+                    cancelText="取消"
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
                     <Transfer onChange={this.handleTransferChange}/>
-                    <PdfContainer tableDataSource={tableDataSource} tabIndex={tabIndex}/>
+                    <PdfContainer tableDataSource={tableDataSource} chartDataSource={chartDataSource} tabIndex={tabIndex}/>
                 </Modal>
             </span>
         );
