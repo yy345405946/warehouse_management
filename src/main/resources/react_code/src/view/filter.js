@@ -78,7 +78,7 @@ class Filter extends React.Component{
                         <RangePicker ref={node => (this.globalRangePicker = node)} onChange={this.dateChange} size="default" />
                     </Col>
                     <Col span={1}>
-                        <ExportOrderModal />
+                        <ExportOrderModal params={this.params}/>
                     </Col>
                 </Row>
             </div>

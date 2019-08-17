@@ -5,21 +5,21 @@ class FooterComponent extends Component{
 
     render(){
         return (
-            <Row className="swt-footer border" gutter={128}>
+            <Row className="swt-footer border">
                 <Col span={8}>
                     <Row>
-                        <Col span={3}>
-                            <img src="http://localhost:8443/images/homepage/zhizhao.png" />
+                        <Col span={2}>
+                            <img src="/images/zhizhao.png" />
                         </Col>
-                        <Col span={21}>
+                        <Col span={22}>
                             地址上海市靜安區鎮寧路200號欣安大廈西嵾27B-D浥ICP備11034040號
                         </Col>
                     </Row>
                 </Col>
                 <Col span={7}>
                     <Row>
-                        <img src="/weixin.png" style={{visibility: "hidden"}} />
-                        <img src="/weibo.png" style={{visibility: "hidden"}} />
+                        <img src="/images/weixin.png" style={{visibility: "hidden"}} />
+                        <img src="/images/weibo.png" style={{visibility: "hidden"}} />
                     </Row>
                     <Row>
                         © 2018 Copyright Siwu tang. All rights seserved
@@ -30,10 +30,10 @@ class FooterComponent extends Component{
                         <Row gutter={32}>
                             <Col span={16}></Col>
                             <Col span={4}>
-                                <img src="http://localhost:8443/images/homepage/weixin.png" />
+                                <img src="/images/weixin.png" />
                             </Col>
                             <Col span={4}>
-                                <img src="http://localhost:8443/images/homepage/weibo.png" />
+                                <img src="/images/weibo.png" />
                             </Col>
                         </Row>
                         <Row>

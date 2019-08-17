@@ -33,12 +33,6 @@ public class ChukuOrder implements Serializable {
     @Column(name="price")
     private Float price;
 
-    @Column(name="profile")
-    private BigDecimal profile;
-
-    @Column(name="rebase")
-    private BigDecimal rebase;
-
     @Column(name="memo")
     private String memo;
 

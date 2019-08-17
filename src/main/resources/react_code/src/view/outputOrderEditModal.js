@@ -129,7 +129,7 @@ class App extends Component{
                             <OutputOrder onUpdate={this.update} isEdit={isEdit}/>
                         </TabPane>
                         <TabPane tab="自动上传" key="2">
-                            <FileUpload url="/upload/chuku" templateUrl="/ChukuTemplate.xlsx"/>
+                            <FileUpload url="/upload/chuku" templateUrl="/template/ChukuTemplate.xlsx"/>
                         </TabPane>
                     </Tabs>
                 </Modal>

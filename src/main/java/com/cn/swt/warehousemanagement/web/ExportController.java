@@ -1,14 +1,14 @@
 package com.cn.swt.warehousemanagement.web;
 
+import com.cn.swt.warehousemanagement.domain.Order;
 import com.cn.swt.warehousemanagement.service.ExportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,9 +21,14 @@ public class ExportController {
     @PostMapping(value="/pdf")
     public void exportPDF(@RequestParam String renderedHtml, @RequestParam String cssStyle,
                           @RequestParam String fileName, HttpServletResponse response){
-        renderedHtml = "aaaaa";
-        cssStyle="";
         exportService.exportHtmlToPDF(response, fileName, cssStyle, renderedHtml);
+    }
+
+    @GetMapping(value="profile")
+    public List<Order> profile(@RequestParam(required = false) String keyWords,
+                               @RequestParam(required = false) String startDate,
+                               @RequestParam(required = false) String endDate){
+        return exportService.profileDetails(keyWords, startDate, endDate);
     }
 
 }

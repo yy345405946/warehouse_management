@@ -86,7 +86,7 @@ class App extends Component{
                             <InputOrder onUpdate={this.update} onReset={this.reset} record={record}/>
                         </TabPane>
                         <TabPane tab="自动上传" key="2">
-                            <FileUpload url="/upload/ruku" templateUrl="/RukuTemplate.xlsx" onFetch={this.props.onFetch}/>
+                            <FileUpload url="/upload/ruku" templateUrl="/template/RukuTemplate.xlsx" onFetch={this.props.onFetch}/>
                         </TabPane>
                     </Tabs>
                 </Modal>

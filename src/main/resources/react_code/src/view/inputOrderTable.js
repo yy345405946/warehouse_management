@@ -27,7 +27,6 @@ class EditableTable extends React.Component{
                 width: '5%',
                 filters: [{ text: '自用', value: '自用' }, { text: '他用', value: '他用' }],
                 onFilter: (value, record) => record.useType.indexOf(value) === 0
-                //...this.getColumnSearchProps('useType'),
             },
             {
                 title: '商品归类',
@@ -120,7 +119,8 @@ class EditableTable extends React.Component{
             {
                 title: '备注',
                 dataIndex: 'memo',
-                width: '9%'
+                width: '9%',
+                className: 'swt-memo'
             },
             {
                 title: '操作',
@@ -291,7 +291,7 @@ class EditableTable extends React.Component{
             <div>
                 <Filter onFetch={this.fetch} onSearch={this.search} onSave={this.save}/>
                 <Table
-                    className="components-table-demo-nested"
+                    className="swt-warehouse-table"
                     bordered
                     dataSource={dataSource}
                     columns={this.columns}

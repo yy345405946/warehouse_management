@@ -17,7 +17,7 @@ class HeaderComponent extends Component{
                     </Row>
                 </Col>
                 <Col span={2} style={{textAlign: "center"}}>
-                    <img src="/logo.png" height="50px"/>
+                    <img src="/images/logo.png" height="50px"/>
                 </Col>
                 <Col span={11}>
                     <Row>

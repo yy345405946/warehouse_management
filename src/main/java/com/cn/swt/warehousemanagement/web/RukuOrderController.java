@@ -36,7 +36,9 @@ public class RukuOrderController {
     }
 
     @GetMapping(value = "/find")
-    public List<RukuOrder> findByParams(@RequestParam(required = false) String keyWords, @RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate){
+    public List<RukuOrder> findByParams(@RequestParam(required = false) String keyWords,
+                                        @RequestParam(required = false) String startDate,
+                                        @RequestParam(required = false) String endDate){
         if(StringUtils.isEmpty(keyWords) && StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)){
             return findAll();
         }
