@@ -1,11 +1,31 @@
 import React, { Component } from 'react';
 import { Row, Col, Input, InputNumber, Select, DatePicker } from 'antd';
 import moment from 'moment';
+import reqwest from 'reqwest';
 
 const { Option } = Select;
 const dateFormat = 'YYYY-MM-DD';
 
 class InputOrder extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = { categoryList: [] }
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        reqwest({
+            url: '/category/findAll',
+            method: 'get',
+            type: 'json',
+        }).then(response => {
+            this.setState( { categoryList: response } );
+        });
+    }
 
     reset = () => {
         const { onReset } = this.props;
@@ -25,6 +45,7 @@ class InputOrder extends Component{
 
     render() {
         const { record } = this.props;
+        const { categoryList } = this.state;
 
         return (
             <div>
@@ -42,7 +63,13 @@ class InputOrder extends Component{
                     </Col>
                     <Col span={12}>
                         <div>商品归类</div>
-                        <Input ref={node => (this.category = node)} defaultValue={record? record.category : ""} onChange={this.categoryChange}/>
+                        <Select style={{ width: "100%" }} ref={node => (this.category = node)} defaultValue={record? record.category : ""} onChange={this.categoryChange} >
+                            {
+                                categoryList.map(category => {
+                                    return <Option value={category.id} checked>{ category.name }</Option>
+                                })
+                            }
+                        </Select>
                     </Col>
                 </Row>
                 <Row gutter={32}>

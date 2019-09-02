@@ -52,3 +52,8 @@
     padding-top: 10px;
     height: 10%;
 }
+.editable-row .ant-form-explain {
+  position: absolute;
+  font-size: 12px;
+  margin-top: -4px;
+}

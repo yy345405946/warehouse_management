@@ -30,9 +30,9 @@ class EditableTable extends React.Component{
             },
             {
                 title: '商品归类',
-                dataIndex: 'category',
+                dataIndex: 'categoryStr',
                 width: '8%',
-                ...this.getColumnSearchProps('category')
+                ...this.getColumnSearchProps('categoryStr')
             },
             {
                 title: '供应商',

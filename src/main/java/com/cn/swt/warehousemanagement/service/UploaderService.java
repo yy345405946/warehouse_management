@@ -81,7 +81,9 @@ public class UploaderService {
             String category = row.getCell(1) != null? row.getCell(1).getStringCellValue() : null;
 
             rukuOrder.setUseType(row.getCell(0) != null? row.getCell(0).getStringCellValue() : null);
-            rukuOrder.setCategory(row.getCell(1) != null? row.getCell(1).getStringCellValue() : null);
+            if(!StringUtils.isEmpty(category)){
+                rukuOrder.setCategory(Integer.parseInt(category));
+            }
             rukuOrder.setVendor(row.getCell(2) != null? row.getCell(2).getStringCellValue() : null);
             rukuOrder.setName(row.getCell(3) != null? row.getCell(3).getStringCellValue() : null);
             rukuOrder.setCost(row.getCell(4) != null? new BigDecimal(row.getCell(4).getNumericCellValue()) : null);

@@ -60,7 +60,7 @@ public class RukuOrderService {
                 useTypeMap = new HashMap<>();
                 rukuOrderMap.put(useType, useTypeMap);
             }
-            String category = rukuOrder.getCategory();
+            String category = String.valueOf(rukuOrder.getCategory());
             Map<String, Object> categoryMap = (Map<String, Object>)useTypeMap.get(category);
             if(categoryMap == null){
                 categoryMap = new HashMap<>();

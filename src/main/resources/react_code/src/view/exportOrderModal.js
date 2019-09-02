@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'antd';
 import reqwest from 'reqwest';
-import Transfer from '../components/transfer';
+import ExportFilter from './exportFilter';
 import PdfContainer from './exportPdfContainer';
 
 class App extends Component{
@@ -28,8 +28,14 @@ class App extends Component{
     }
 
     handleOk = () => {
-        document.querySelector("input.pdf-html").value = document.querySelector("div#pdf-container").outerHTML;
-        document.querySelector("#pdf-container-parent form").submit();
+        const { isSummary } = this.props;
+        if(isSummary){
+            document.querySelector("#pdf-container-parent-chart input.pdf-html").value = document.querySelector("div#pdf-container-chart").outerHTML;
+            document.querySelector("#pdf-container-parent-chart form").submit();
+        }else{
+            document.querySelector("#pdf-container-parent-table input.pdf-html").value = document.querySelector("div#pdf-container-table").outerHTML;
+            document.querySelector("#pdf-container-parent-table form").submit();
+        }
         this.setState( { visible: false } );
     }
 
@@ -43,7 +49,6 @@ class App extends Component{
 
     fetchData = () => {
         const { keyWords, startDate, endDate } = this.props.params;
-        debugger;
         reqwest({
             url: '/export/profile?keyWords='+keyWords+"&startDate="+startDate+"&endDate="+endDate,
             method: 'get',
@@ -57,10 +62,12 @@ class App extends Component{
 
     render(){
         const { visible, tableDataSource, chartDataSource, tabIndex } = this.state;
+        const { isSummary } = this.props;
 
+        const btnText = isSummary? "汇总" : "明细";
         return (
             <span>
-                <Button type="primary" onClick={this.showModal}>报表</Button>
+                <Button type="primary" onClick={this.showModal}>{btnText}</Button>
                 <Modal
                     title="导出"
                     visible={visible}
@@ -68,9 +75,10 @@ class App extends Component{
                     cancelText="取消"
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    width="80%"
                 >
-                    <Transfer onChange={this.handleTransferChange}/>
-                    <PdfContainer tableDataSource={tableDataSource} chartDataSource={chartDataSource} tabIndex={tabIndex}/>
+                    <ExportFilter />
+                    <PdfContainer isSummary={isSummary} tableDataSource={tableDataSource} chartDataSource={chartDataSource} tabIndex={tabIndex}/>
                 </Modal>
             </span>
         );
