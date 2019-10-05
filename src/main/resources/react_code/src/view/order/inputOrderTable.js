@@ -58,14 +58,16 @@ class EditableTable extends React.Component{
                 dataIndex: 'number',
                 width: '5%',
                 sorter: (a, b) => a.number - b.number,
-                sortDirections: ['descend', 'ascend']
+                sortDirections: ['descend', 'ascend'],
+                render: number => (<span style={{color: number <=0? 'red' : '#333', fontWeight: number <=0? 700 : 400}}>{number}</span>)
             },
             {
                 title: '余数',
                 dataIndex: 'snum',
                 width: '5%',
                 sorter: (a, b) => a.snum - b.snum,
-                sortDirections: ['descend', 'ascend']
+                sortDirections: ['descend', 'ascend'],
+                render: snum => (<span style={{color: snum <=0? 'red' : '#333', fontWeight: snum <=0? 700 : 400}}>{snum}</span>)
             },
             {
                 title: '单位',
@@ -76,8 +78,14 @@ class EditableTable extends React.Component{
             {
                 title: '入库时间',
                 dataIndex: 'rukuDate',
-                width: '10%',
-                sorter: (a, b) => a.rukuDate - b.rukuDate,
+                width: '8%',
+                sorter: (a, b) => {
+                    if(a.rukuDate && b.rukuDate){
+                        return moment(a.rukuDate, dateFormat) - moment(b.rukuDate, dateFormat) >0;
+                    }else{
+                        return true;
+                    }
+                },
                 sortDirections: ['descend', 'ascend'],
                 render: rukuDate => {
                     if(rukuDate){
@@ -107,7 +115,13 @@ class EditableTable extends React.Component{
                 title: '结算时间',
                 dataIndex: 'checkoutDate',
                 width: '7%',
-                sorter: (a, b) => a.checkoutDate - b.checkoutDate,
+                sorter: (a, b) => {
+                    if(a.checkoutDate && b.checkoutDate){
+                        return moment(a.checkoutDate, dateFormat) - moment(b.checkoutDate, dateFormat) > 0
+                    }else{
+                        return false;
+                    }
+                },
                 sortDirections: ['descend', 'ascend'],
                 render: rukuDate => {
                     if(rukuDate){
@@ -156,8 +170,13 @@ class EditableTable extends React.Component{
             type: 'json',
         }).then(dataSource => {
             this.setState({
-                loading: false,
                 dataSource: dataSource
+            });
+        }, (err, msg) => {
+            console.error(msg);
+        }).always(response => {
+            this.setState({
+                loading: false
             });
         });
     }
@@ -175,9 +194,14 @@ class EditableTable extends React.Component{
             type: 'json',
         }).then(dataSource => {
             this.setState({
-                loading: false,
                 dataSource: dataSource
             });
+        }, (err, msg) => {
+            console.error(msg);
+        }).always(response => {
+            this.setState({
+                loading: false
+            })
         });
     }
 
@@ -248,6 +272,8 @@ class EditableTable extends React.Component{
             if(response){
                 this.fetch();
             }
+        }, (err, msg) => {
+            console.error(msg)
         });
     }
 
@@ -264,6 +290,8 @@ class EditableTable extends React.Component{
             if(response){
                 this.fetch();
             }
+        }, (err, msg) => {
+            console.error(msg);
         });
     }
 
@@ -280,6 +308,8 @@ class EditableTable extends React.Component{
             if(response){
                 this.fetch();
             }
+        }, (err, msg) => {
+            console.error(msg);
         });
     }
 

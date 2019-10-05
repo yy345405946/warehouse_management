@@ -27,6 +27,10 @@ class App extends Component{
                     options: response
                 });
             }
+        }, (err, msg) => {
+            console.error(msg);
+        }).always(response => {
+            //console.log()
         });
     }
 
@@ -46,6 +50,7 @@ class App extends Component{
                 onChange={this.onChange}
                 placeholder="请选择"
                 showSearch={{filter: this.filter}}
+                style={{width: '100%'}}
             />
         )
     }

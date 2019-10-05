@@ -1,9 +1,7 @@
 import React from 'react';
-import { Input, Button, DatePicker, Row, Col } from 'antd';
-import InputOrderEditModal from './inputOrderEditModal';
-import OutputOrderEditModal from './outputOrderEditModal';
-import ExportOrderModal from './exportOrderModal';
-import CategoryModal from './categoryModal';
+import { Input, Button, DatePicker, Row, Col, Icon } from 'antd';
+import InputModal from './inputOrderEditModal';
+import OutputModal from './outputOrderEditModal';
 
 const { RangePicker } = DatePicker;
 
@@ -51,44 +49,39 @@ class Filter extends React.Component{
         const { onAddHandle } = this.props;
         return (
             <div>
-                <Row style={{marginBottom: 16}}>
-                    <Col span={3}>
+                <Row type="flex" style={{marginBottom: 16}}>
+                    <Col span={4}>
                         <Input
                             ref={node => (this.globalFilter = node)}
+                            prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             placeholder="关键字"
                             onChange={this.keyWordsChange}
+                            onPressEnter={this.search}
+                            style={{width: '90%'}}
                         />
                     </Col>
-                    <Col span={16}>
+                    <Col span={17}>
                     </Col>
-                    <Col span={1}>
-                        <Button type="primary" style={{marginRight: 16}} onClick={this.search}>查询</Button>
-                    </Col>
-                    <Col span={1}>
-                        <Button type="primary" style={{marginRight: 16}} onClick={this.reset}>重置</Button>
-                    </Col>
-                    <Col span={1}>
-                        <InputOrderEditModal isEdit={false} onSave={this.props.onSave} onFetch={this.props.onFetch}/>
-                    </Col>
-                    <Col span={1}>
-                        <OutputOrderEditModal isEdit={false} onFetch={this.props.onFetch}/>
-                    </Col>
-                    <Col span={1}>
-                        <OutputOrderEditModal isEdit={false} onFetch={this.props.onFetch}/>
+                    <Col span={3}>
+                        <Col span={12}>
+                            <Button type="primary" style={{marginRight: 16}} onClick={this.search}>查询</Button>
+                        </Col>
+                        <Col span={12}>
+                            <Button type="primary" style={{marginRight: 16}} onClick={this.reset}>重置</Button>
+                        </Col>
                     </Col>
                 </Row>
                 <Row type="flex" style={{marginBottom: 16}}>
                     <Col span={21}>
                         <RangePicker ref={node => (this.globalRangePicker = node)} onChange={this.dateChange} size="default" placeholder={["开始日期", "结束日期"]}/>
                     </Col>
-                    <Col span={1}>
-                        <ExportOrderModal params={this.params} isSummary={true}/>
-                    </Col>
-                    <Col span={1}>
-                        <ExportOrderModal params={this.params} isSummary={false}/>
-                    </Col>
-                    <Col span={1}>
-                        <CategoryModal />
+                    <Col span={3}>
+                        <Col span={12}>
+                            <InputModal isEdit={false} onSave={this.props.onSave} onFetch={this.props.onFetch} />
+                        </Col>
+                        <Col span={12}>
+                            <OutputModal isEdit={false} onFetch={this.props.onFetch} />
+                        </Col>
                     </Col>
                 </Row>
             </div>

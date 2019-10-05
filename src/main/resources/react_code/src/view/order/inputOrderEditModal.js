@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Tabs } from 'antd';
 import InputOrder from './inputOrder';
-import FileUpload from '../components/fileUploader';
+import FileUpload from '../../components/fileUploader';
 
 const { TabPane } = Tabs;
 
@@ -82,14 +82,19 @@ class App extends Component{
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <Tabs defaultActiveKey="1" onChange={this.handleChange}>
-                        <TabPane tab="手动上传" key="1">
-                            <InputOrder onUpdate={this.update} onReset={this.reset} record={record}/>
-                        </TabPane>
-                        <TabPane tab="自动上传" key="2">
-                            <FileUpload url="/upload/ruku" templateUrl="/template/RukuTemplate.xlsx" onFetch={this.props.onFetch}/>
-                        </TabPane>
-                    </Tabs>
+                    {
+                        this.state.visible? (
+                            <Tabs defaultActiveKey="1" onChange={this.handleChange}>
+                                <TabPane tab="手动上传" key="1">
+                                    <InputOrder onUpdate={this.update} onReset={this.reset} record={record}/>
+                                </TabPane>
+                                <TabPane tab="自动上传" key="2">
+                                    <FileUpload url="/upload/ruku" templateUrl="/template/RukuTemplate.xlsx" onFetch={this.props.onFetch}/>
+                                </TabPane>
+                            </Tabs>
+                        ) : (<></>)
+                    }
+                    
                 </Modal>
             </span>
         );

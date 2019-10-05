@@ -32,7 +32,11 @@ class App extends Component{
                     cancelText="关闭"
                     onCancel={this.handleCancel}
                 >
-                    <CategoryTable />
+                    {
+                        this.state.visible? (
+                            <CategoryTable />
+                        ) : (<></>)
+                    }
                 </Modal>
             </span>
         );

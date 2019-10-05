@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, Tabs } from 'antd';
 import reqwest from 'reqwest';
 import OutputOrder from './outputOrder';
-import FileUpload from '../components/fileUploader';
+import FileUpload from '../../components/fileUploader';
 
 const { TabPane } = Tabs;
 
@@ -54,11 +54,15 @@ class App extends Component{
         reqwest({
             url: '/ruku/findRukuByParams',
             method: 'get',
-            data: params,
-            contentType: "application/json"
+            data: {
+                ...params
+            },
+            type: 'json'
         }).then(response => {
-            this.order.inputOrderId = response;
-            this.save();
+            if(response !== 0){
+                this.order.inputOrderId = response;
+                this.save();
+            }
         });
     }
 
@@ -125,14 +129,18 @@ class App extends Component{
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <Tabs defaultActiveKey="1" onChange={this.handleChange}>
-                        <TabPane tab="手动上传" key="1">
-                            <OutputOrder onUpdate={this.update} isEdit={isEdit}/>
-                        </TabPane>
-                        <TabPane tab="自动上传" key="2">
-                            <FileUpload url="/upload/chuku" templateUrl="/template/ChukuTemplate.xlsx"/>
-                        </TabPane>
-                    </Tabs>
+                    {
+                        this.state.visible? (
+                            <Tabs defaultActiveKey="1" onChange={this.handleChange}>
+                                <TabPane tab="手动上传" key="1">
+                                    <OutputOrder onUpdate={this.update} isEdit={isEdit}/>
+                                </TabPane>
+                                <TabPane tab="自动上传" key="2">
+                                    <FileUpload url="/upload/chuku" templateUrl="/template/ChukuTemplate.xlsx"/>
+                                </TabPane>
+                            </Tabs>
+                        ) : (<></>)
+                    }
                 </Modal>
             </span>
         );

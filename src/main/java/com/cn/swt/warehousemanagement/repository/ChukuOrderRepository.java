@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ChukuOrderRepository extends JpaRepository<ChukuOrder, Integer> {
 
-    List<ChukuOrder> findByInputOrderId(Integer inputOrderId);
+    List<ChukuOrder> findAllByOrderByChukuDateAsc();
+
+    List<ChukuOrder> findByInputOrderIdOrderByChukuDateAsc(Integer inputOrderId);
 
 }

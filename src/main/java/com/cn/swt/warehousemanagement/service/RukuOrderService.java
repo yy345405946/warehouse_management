@@ -60,37 +60,29 @@ public class RukuOrderService {
                 useTypeMap = new HashMap<>();
                 rukuOrderMap.put(useType, useTypeMap);
             }
-            String category = String.valueOf(rukuOrder.getCategory());
+            String category = String.valueOf(rukuOrder.getCategoryStr());
             Map<String, Object> categoryMap = (Map<String, Object>)useTypeMap.get(category);
             if(categoryMap == null){
                 categoryMap = new HashMap<>();
                 useTypeMap.put(category, categoryMap);
-            }else{
-                categoryMap.put(category, new HashMap<>());
             }
             String vendor = rukuOrder.getVendor();
             Map<String, Object> vendorMap = (Map<String, Object>)categoryMap.get(vendor);
             if(vendorMap == null){
                 vendorMap = new HashMap<>();
                 categoryMap.put(vendor, vendorMap);
-            }else{
-                vendorMap.put(vendor, new HashMap<>());
             }
             String name = rukuOrder.getName();
             Map<String, Object> nameMap = (Map<String, Object>)vendorMap.get(name);
             if(nameMap == null){
                 nameMap = new HashMap<>();
                 vendorMap.put(name, nameMap);
-            }else{
-                nameMap.put(name, new HashMap<>());
             }
             String unit = rukuOrder.getUnit();
             List<String> unitList = (List<String>)nameMap.get(unit);
             if(unitList == null){
                 unitList = new ArrayList<>();
                 nameMap.put(unit, unitList);
-            }else{
-                unitList.add(unit);
             }
         }
         for(Map.Entry<String, Object> useTypeEntry : rukuOrderMap.entrySet()){

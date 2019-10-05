@@ -1,6 +1,8 @@
 package com.cn.swt.warehousemanagement.service;
 
+import com.cn.swt.warehousemanagement.domain.Consumerable;
 import com.cn.swt.warehousemanagement.domain.Order;
+import com.cn.swt.warehousemanagement.domain.TotalReport;
 import com.cn.swt.warehousemanagement.repository.RukuOrderRepository;
 import com.openhtmltopdf.bidi.support.ICUBidiReorderer;
 import com.openhtmltopdf.bidi.support.ICUBidiSplitter;
@@ -18,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.util.StringValueResolver;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletResponse;
@@ -159,6 +160,80 @@ public class ExportService {
         return orders;
     }
 
+    public List<Consumerable> consumerableDetails(String useType, String startDate, String endDate){
+        List<Consumerable> consumerables = new ArrayList<>();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        if(StringUtils.isEmpty(useType) && StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)){
+            dataList = rukuOrderRepository.findAllForConsumerable();
+        }else if(!StringUtils.isEmpty(useType) && StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)){
+            dataList = rukuOrderRepository.findByUseTypeForConsumerable(useType);
+        }else if(StringUtils.isEmpty(useType) && !StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)){
+            dataList = rukuOrderRepository.findByDateForConsumerable(startDate, endDate);
+        }else if(!StringUtils.isEmpty(useType) && !StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)){
+            dataList = rukuOrderRepository.findByParamsForConsumerable(useType, startDate, endDate);
+        }
+        for(Map<String, Object> dataMap : dataList){
+            consumerables.add(parseConsumerable(dataMap));
+        }
+        return consumerables;
+    }
+
+    public List<TotalReport> consumerableMonth(String useType, String startDate, String endDate){
+        List<TotalReport> totalReports = new ArrayList<>();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        if(!StringUtils.isEmpty(useType)){
+            dataList = rukuOrderRepository.findAllByUseTypeForMonth("2019", useType);
+        }else{
+            dataList = rukuOrderRepository.findAllForMonth("2019");
+        }
+        for(Map<String, Object> dataMap : dataList){
+            totalReports.add(parse(dataMap));
+        }
+
+        boolean isStat = true;
+        float preProfile = 0;
+        int preYSum = 0;
+        for(TotalReport totalReport : totalReports){
+            preProfile = totalReport.getProfile();
+            preYSum = totalReport.getYSum();
+            if(isStat){
+                isStat = false;
+            }else{
+                totalReport.setInProfilePercent((totalReport.getProfile() - preProfile) / totalReport.getProfile());
+                totalReport.setInYSumPercent((totalReport.getYSum() - preYSum)/ totalReport.getYSum());
+            }
+        }
+        return totalReports;
+    }
+
+    public List<TotalReport> consumerableYear(String useType){
+        List<TotalReport> totalReports = new ArrayList<>();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        if(!StringUtils.isEmpty(useType)){
+            dataList = rukuOrderRepository.findAllByUseTypeForYear(useType);
+        }else{
+            dataList = rukuOrderRepository.findAllForYear();
+        }
+
+        for(Map<String, Object> dataMap : dataList){
+            totalReports.add(parse(dataMap));
+        }
+        boolean isStat = true;
+        float preProfile = 0;
+        int preYSum = 0;
+        for(TotalReport totalReport : totalReports){
+            preProfile = totalReport.getProfile();
+            preYSum = totalReport.getYSum();
+            if(isStat){
+                isStat = false;
+            }else{
+                totalReport.setInProfilePercent((totalReport.getProfile() - preProfile) / totalReport.getProfile());
+                totalReport.setInYSumPercent((totalReport.getYSum() - preYSum)/ totalReport.getYSum());
+            }
+        }
+        return totalReports;
+    }
+
     private Order parseOrder(Map<String, Object> dataMap){
         Order order = new Order();
         String useType = dataMap.get("use_type") != null? String.valueOf(dataMap.get("use_type")) : null;
@@ -249,6 +324,78 @@ public class ExportService {
             order.setPrice(price);
         }
         return order;
+    }
+
+    private Consumerable parseConsumerable(Map<String, Object> dataMap){
+        Consumerable consumerable = new Consumerable();
+        String name = dataMap.get("name") != null? String.valueOf(dataMap.get("name")) : null;
+        String costStr = dataMap.get("cost") != null? String.valueOf(dataMap.get("cost")) : null;
+        String chukuNumberStr = dataMap.get("chuku_number") != null? String.valueOf(dataMap.get("chuku_number")) : null;
+        String chukuDateStr = dataMap.get("chuku_date") != null? String.valueOf(dataMap.get("chuku_date")) : null;
+        String priceStr = dataMap.get("price") != null? String.valueOf(dataMap.get("price")) : null;
+        BigDecimal cost = null;
+        if(costStr != null){
+            cost = new BigDecimal(costStr);
+        }
+        Integer chukuNumber = null;
+        if(chukuNumberStr != null){
+            chukuNumber = Integer.parseInt(chukuNumberStr);
+        }
+        Date chukuDate = null;
+        if(chukuDateStr != null){
+            try{
+                chukuDate = simpleDateFormat.parse(chukuDateStr);
+            }catch (ParseException e){
+                log.error("error in parse date: {}", chukuDateStr, e);
+            }
+        }
+        BigDecimal price = null;
+        if(priceStr != null){
+            price = new BigDecimal(priceStr);
+        }
+
+        if(chukuDate != null){
+            consumerable.setChukuDate(chukuDate);
+        }
+        consumerable.setName(name);
+        if(chukuNumber != null){
+            consumerable.setNum(chukuNumber);
+        }
+        if(price != null && chukuNumber != null){
+            consumerable.setTotalPrice(price.multiply(new BigDecimal(chukuNumber)));
+        }
+        if(cost != null){
+            consumerable.setCost(cost);
+        }
+        if(cost != null && chukuNumber != null){
+            consumerable.setTotalCost(cost.multiply(new BigDecimal(chukuNumber)));
+        }
+        if(consumerable.getTotalCost() != null && consumerable.getTotalPrice() != null){
+            consumerable.setProfile(consumerable.getTotalPrice().subtract(consumerable.getTotalCost()));
+        }
+        return consumerable;
+    }
+
+    private TotalReport parse(Map<String, Object> dataMap){
+        TotalReport report = new TotalReport();
+        String ynum = dataMap.get("ynum") != null? String.valueOf(dataMap.get("ynum")) : null;
+        String date = dataMap.get("date") != null? String.valueOf(dataMap.get("date")) : null;
+        String price = dataMap.get("price") != null? String.valueOf(dataMap.get("price")) : null;
+        String cost = dataMap.get("cost") != null? String.valueOf(dataMap.get("cost")) : null;
+
+        if(ynum != null){
+            report.setYSum(Integer.parseInt(ynum));
+        }
+        if(date != null){
+            report.setDate(date);
+        }
+        if(price != null){
+            report.setPrice(Float.valueOf(price));
+        }
+        if(cost != null){
+            report.setCost(Float.valueOf(cost));
+        }
+        return report;
     }
 
 }

@@ -34,7 +34,7 @@ public class RukuOrder {
 
     private Integer number;
 
-    @Column(name="snum", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private Integer snum;
 
     @Column(name="ruku_date")

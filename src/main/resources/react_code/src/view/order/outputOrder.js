@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Input, InputNumber, DatePicker } from 'antd';
 import moment from 'moment';
-import Cascader from '../components/cascader';
+import Cascader from '../../components/cascader';
 
 const dateFormat = 'YYYY-MM-DD';
 
@@ -19,7 +19,6 @@ class OutputOrder extends Component{
                         </Row>
                     ) : (<span></span>)
                 }
-
                 <Row gutter={64}>
                     <Col span={12}>
                         <div>售单价</div>

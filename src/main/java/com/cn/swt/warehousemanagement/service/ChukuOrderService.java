@@ -25,11 +25,11 @@ public class ChukuOrderService {
     }
 
     public List<ChukuOrder> findAll(){
-        return chukuOrderRepository.findAll();
+        return chukuOrderRepository.findAllByOrderByChukuDateAsc();
     }
 
     public List<ChukuOrder> findByInputOrderId(Integer inputOrderId){
-        return chukuOrderRepository.findByInputOrderId(inputOrderId);
+        return chukuOrderRepository.findByInputOrderIdOrderByChukuDateAsc(inputOrderId);
     }
 
 }

@@ -52,11 +52,11 @@ public class RukuOrderController {
 
     @GetMapping(value = "/findRukuByParams")
     public int findRukuByParams(
-            @RequestParam String useType,
-            @RequestParam String category,
-            @RequestParam String vendor,
-            @RequestParam String name,
-            @RequestParam String unit){
+            @RequestParam(name = "useType") String useType,
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "vendor") String vendor,
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "unit") String unit){
         RukuOrder rukuOrder = rukuOrderService.findRukuByParams(useType, category, vendor, name, unit);
         if(rukuOrder != null){
             return rukuOrder.getId();

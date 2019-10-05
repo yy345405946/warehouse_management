@@ -1,0 +1,34 @@
+.pdf-table-title{
+    text-align:center;
+    font-weight:200;
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.pdf-th,.pdf-td{
+    display:inline-block;
+    padding:2px;
+    border: 1px solid #ccc;
+    border-collapse:collapse;
+    width:12%;
+    height:32px;
+    text-align:center;
+    vertical-align:middle;
+}
+
+#pdf-container-ysummary .pdf-th, #pdf-container-msummary .pdf-th{
+    height:52px;
+}
+
+#pdf-container-ysummary h2, #pdf-container-msummary h2, #pdf-container-details h2{
+    text-align: center;
+    margin-top: 30px;
+}
+
+#pdf-container-ysummary>div, #pdf-container-msummary>div, #pdf-container-details>div{
+    text-align: center;
+}
+
+.pdf-td.total{
+    border: none;
+}

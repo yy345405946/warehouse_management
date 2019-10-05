@@ -27,32 +27,12 @@ class InputOrder extends Component{
         });
     }
 
-    reset = () => {
-        const { onReset } = this.props;
-        onReset();
-        this.useType.setState({value: "自用"});
-        this.category.setState({value: ""});
-        this.vendor.setState({value: ""});
-        this.name.setState({value: ""});
-        this.cost.setState({value: ""});
-        this.number.setState({value: ""});
-        this.unit.setState({value: ""});
-        this.rukuDate.picker.setState({value: ""});
-        this.debate.setState({value: ""});
-        this.checkoutDate.picker.setState({value: ""});
-        this.memo.setState({value: ""})
-    }
-
     render() {
         const { record } = this.props;
         const { categoryList } = this.state;
 
         return (
             <div>
-                <Row>
-                    <Col span={22}></Col>
-                    <Col span={2}><a href="javascript:void(0);" onClick={this.reset}>重置</a></Col>
-                </Row>
                 <Row gutter={32}>
                     <Col span={12}>
                         <div>使用</div>
@@ -66,7 +46,7 @@ class InputOrder extends Component{
                         <Select style={{ width: "100%" }} ref={node => (this.category = node)} defaultValue={record? record.category : ""} onChange={this.categoryChange} >
                             {
                                 categoryList.map(category => {
-                                    return <Option value={category.id} checked>{ category.name }</Option>
+                                    return <Option key={category.id} value={category.id} >{ category.name }</Option>
                                 })
                             }
                         </Select>
@@ -148,7 +128,7 @@ class InputOrder extends Component{
 
     categoryChange = e => {
         const { onUpdate } = this.props;
-        onUpdate("category", e.target.value);
+        onUpdate("category", e);
     }
 
     vendorChange = e => {
